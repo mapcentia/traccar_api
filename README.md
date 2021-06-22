@@ -5,7 +5,8 @@ Configuration in `/app/conf/App.php` :
 ```php
 
 "traccar" => [
-    "host" => "http://.....",
+    "baseUrl" => "http://.....:80",
+    "host" => "myhost.com",
     "token" => "......",
 ],
 

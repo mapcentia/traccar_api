@@ -36,10 +36,9 @@ class Traccar extends Controller
     {
         Database::setDb(Route::getParam("db"));
         $m = new Model();
-        $url = App::$param["traccar"]["host"];
         $client = new Client([
             'timeout' => 10.0,
-            'base_uri' => $url,
+            'base_uri' => App::$param["traccar"]["baseUri"],
         ]);
         try {
             $res = $client->request("GET", '/api/session', ['query' => ['token' => App::$param["traccar"]["token"]]]);
@@ -52,7 +51,7 @@ class Traccar extends Controller
         $cookie = SetCookie::fromString($res->getHeader("Set-Cookie")[0]);
 
         $arr[$cookie->getName()] = $cookie->getValue();
-        $jar = CookieJar::fromArray($arr, 'gps.nsbvteknik.dk');
+        $jar = CookieJar::fromArray($arr, App::$param["traccar"]["host"]);
 
         try {
             $res = $client->request("GET", '/api/positions', ['cookies' => $jar]);
