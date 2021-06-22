@@ -1,0 +1,2 @@
+GET http://localhost:8080/extensions/traccar_api/controller/traccar/mydb
+Content-Type: application/json

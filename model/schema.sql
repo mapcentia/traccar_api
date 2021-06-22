@@ -1,0 +1,22 @@
+create table traccar.positions(
+    gid serial,
+    id int unique not null,
+    attributes jsonb,
+    deviceid int not null,
+    type int,
+    protocol varchar(255),
+    servertime timestamptz not null,
+    devicetime timestamptz not null,
+    fixtime timestamptz not null,
+    outdated boolean,
+    valid boolean,
+    latitude float not null ,
+    longitude float not null ,
+    altitude float,
+    speed float,
+    course float,
+    address varchar(255),
+    accuracy float,
+    network jsonb,
+    the_geom geometry(POINT, 4326)
+)
