@@ -34,14 +34,15 @@ class Traccar extends Controller
      */
     public function get_index(): array
     {
-        Database::setDb(Route::getParam("db"));
+        $db =Route::getParam("db");
+        Database::setDb($db);
         $m = new Model();
         $client = new Client([
             'timeout' => 10.0,
-            'base_uri' => App::$param["traccar"]["baseUri"],
+            'base_uri' => App::$param["traccar"][$db]["baseUri"],
         ]);
         try {
-            $res = $client->request("GET", '/api/session', ['query' => ['token' => App::$param["traccar"]["token"]]]);
+            $res = $client->request("GET", '/api/session', ['query' => ['token' => App::$param["traccar"][$db]["token"]]]);
         } catch (GuzzleException $e) {
             return [
                 "success" => false,
@@ -51,7 +52,7 @@ class Traccar extends Controller
         $cookie = SetCookie::fromString($res->getHeader("Set-Cookie")[0]);
 
         $arr[$cookie->getName()] = $cookie->getValue();
-        $jar = CookieJar::fromArray($arr, App::$param["traccar"]["host"]);
+        $jar = CookieJar::fromArray($arr, App::$param["traccar"][$db]["host"]);
 
         try {
             $res = $client->request("GET", '/api/positions', ['cookies' => $jar]);
